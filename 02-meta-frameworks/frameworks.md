@@ -1,43 +1,36 @@
 ## Next.js
 
-- built by Vercel
-- runs on top of React
+- Built by Vercel, runs on top of React.
 
 **Working**
 
-- It uses React Server Component (RSC)
-- Next.js allow to mark component as "Server Component"
-- These component runs only on server for something like fetching data
-- And sends pure HTML to browser
-- Client then download js bundle only for interactive client component
+- Uses React Server Components (RSC). Default is a Server Component (runs only on server, e.g. data fetching, sends HTML).
+- Mark interactive parts with `'use client'` — only those get a JS bundle for the browser.
 
 ## Nuxt
 
-- mature, polished framework for **Vue**
-- uses **Nitro** engine - can be deployed anywhere
+- Mature, polished framework for **Vue**.
+- Uses the **Nitro** engine — same code deploys to Node, Vercel, Netlify, Cloudflare (e.g. `nitro preset: cloudflare-pages`).
 
 ## Astro
 
-- framework agnostic (mix-match any UI)
-- target content heavy site
-- load balzingly fast with zero JS
+- Framework-agnostic (mix React / Vue / Svelte in one page).
+- For content-heavy sites. Zero JS by default.
 
 **Working**
 
-- Uses it's own Astro Component Syntax (*.astro*) for simple UI
-- For complex interactive UI, you can drop specific component into page as an "Island"
-- Astro only hydrates that island, leaving rest of page as pure HTML.
+- Uses its own Astro Component Syntax (`*.astro`) for static UI.
+- For interactive UI, drop a framework component in as an "island" — Astro hydrates only that island, rest stays pure HTML.
 
-> Avoid if goal product is highly interactive SaaS
+> Avoid if the product is a highly interactive SaaS (islands overhead adds up).
 
 ## SvelteKit
 
-- build on Svelte
-- clean, simple and minimal
+- Built on Svelte. Clean, simple, minimal.
 
 **Working**
 
-- Being a compiler, it turns component onto tiny JS file during build step
-- Uses "Adapter"; just tell where to deploy it, then it will format build output accordingly
+- Svelte compiler turns components into tiny JS at build time.
+- Uses "adapters" (`adapter-node`, `adapter-vercel`, `adapter-cloudflare`) — pick the deploy target and it formats the output accordingly.
 
-> Niche, better DX
+> Smaller ecosystem than Next/Nuxt, but best DX for Svelte fans.

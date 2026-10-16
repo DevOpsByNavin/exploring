@@ -1,57 +1,57 @@
-TS = JS + type annotation (static type)
-- reads tsconfig.json and compiles into pure JS
+TS = JS + static types
+- `tsc` (using `tsconfig.json`) type-checks, then strips types to emit pure JS. Types never run in the browser.
 
-Tailwind CSS = prebuilt class that is directly used inside HTML
-- during compiling; a dedicated `.css` file is created refercing html tag and elements.
+Tailwind CSS = utility classes used directly in HTML
+- The build scans your files and generates only the utilities you used into one CSS file.
 
-## Modular API driven Frontend 
+## Modular API-driven frontend
 
-- Vanilla Stack
+- Vanilla stack
 
-  Guide browser how to update DOM step by step.  
-  Cons being: even for a small change we might need to update tons of page element making it a tedious process.
+  You tell the browser how to update the DOM step by step.
+  Con: even a small change can mean touching lots of elements by hand.
 
-- With modern library and frameworks
+- Modern libraries / frameworks
 
-  Instead of guiding browser how to update DOM, we only describe what a page should look like at a given state.
+  You describe what the page should look like for a given state; the library figures out the DOM updates.
 
 ### React
 
 ```
 1. You click the button
         │
-2. setLikes(6) → state changes
+2. setLikes(6) schedules a re-render (React does not "watch" state)
         │
 3. React RE-RUNS your component function:
-   LikeButton() executes again → returns JS object 
+   LikeButton() executes again → returns React elements
         │
-4. New JS obj → new virtual DOM tree (cheap JS object)
+4. New elements → new virtual DOM tree (cheap JS objects, Fiber nodes)
         │
 5. React DIFFS the new tree vs the old tree:
    "button → same; text child changed 5 → 6"
-   This comparing of two JS objects is FAST.
+   Comparing two JS objects is FAST.
         │
-  6. React applies ONLY the detected differences
+6. React applies ONLY the detected differences
    to the real DOM: textNode.data = "❤️ 6"
    (one surgical real-DOM write, not a page rebuild)
         │
 7. Browser repaints just that bit
 ```
-> virtual dom = cheap js object 
+> virtual DOM = cheap JS object describing the real DOM
 
 How it works in 3 steps:
-1. You say where React lives: <div id="react-root">
-2. You say what it looks like: ReactButton component
-3. React watches the state and updates only what changed
+1. You say where React lives: `<div id="react-root">`
+2. You say what it looks like: a `ReactButton` component
+3. `setState` triggers a re-render; React diffs and patches only what changed
 
+Split to know: `react` (component model) + `react-dom` (browser renderer).
 
 **SPA**
-  - server sends empty page (index.html) and js bundle
-  - client create a interactive page from that after executing js
+- Server sends near-empty `index.html` + JS bundle.
+- Client executes JS to render interactive UI.
+- Tradeoff: blank first paint, weak SEO, hydration cost. That's why meta-frameworks exist.
 
 **Vite**
-
-During `npm run build` or `npm run dev`; it's the vite that does the job like:
-
-- JSX/TSX -> JS
-- Tailwind CSS -> Dedicated CSS file
+- Dev (`npm run dev`): esbuild transforms + HMR (state-preserving instant update), no bundle.
+- Build (`npm run build`): Rollup produces the optimized bundle.
+- JSX/TSX -> JS. Tailwind -> CSS via the Tailwind Vite plugin / PostCSS, not Vite core.

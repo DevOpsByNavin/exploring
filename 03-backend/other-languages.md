@@ -1,56 +1,46 @@
 ## Python
 
-- Interact with LLMs, process data or need heavy math.
+Use when you interact with LLMs, process data, or need heavy math.
 
-1. **FastAPI**  
-    - Modern standard for Python API
-    - Use Python type hints for automated docs
-    - For microservices
-
-<br>
+1. **FastAPI**
+   - Modern standard for Python APIs.
+   - Uses Python type hints for validation + auto-generated docs.
+   - For microservices.
 
 2. Django
-    - Monolith (include ORM, admin panel, auth), older yet powerful
-    - For data/content heavy app
-
-<br>
+   - Monolith (ORM, admin panel, auth included), older yet powerful.
+   - For data / content-heavy apps.
 
 3. Flask
-    - Mostly replaced by FastAPI
+   - Minimal. Mostly replaced by FastAPI for new APIs.
 
 ## Go
 
-- Lightweight, fast, and simple.
-- Compiles down to single tiny, binary file; designed to handle millions of concurrent users
+- Lightweight, fast, simple. Compiles to a single tiny binary; built for high concurrency.
+- Frameworks are thin routers over stdlib: **Gin**, **Echo**, **Fiber**, **Chi**.
 
-> Used in real-time chat servers, high throughput infra
-
-Go framework are mostly standard libraries and routers which includes **Gin**, **Echo**, **Fiber**, **Chi**.
+> Use for real-time chat servers, high-throughput infra, single-binary deploys.
 
 ## Rust
 
-- Emerging, fastest, safest, lightest, but steep learning curve.
+- Fastest, safest, lightest — steep learning curve.
 
-> Heavily used in Edge computing. And mostly where every *ms* is expensive.
+> Use where every millisecond is expensive (edge, proxies, infra). **Axum** is dominant alongside **Actix-web**.
 
-**Auxum** is the dominant framework alongside **Actix-web**.
+## PHP (Laravel)
 
-## PHP (laravel)
+- Still relevant because of **Laravel**: auth, queues, websockets, ORM out of the box.
 
-- still relevant because of **Laravel** framework
-- provides everything a solopreneurs needs like auth, queues, websockets, ORM
-
-> For content heavy site,
+> Use for solo-founder CRUD / content-heavy sites with cheap shared hosting.
 
 ## Elixir
 
-- it is a functional programming lang from 1980s that runs on Erlang VM
-- Through it's **Phoenix** framework it still relevant for real time scenario
-- Thorugh *LiveView* you only write backend code the server keeps track of what the user should see, and pushes tiny HTML updates over WebSockets instantly. It gives you a rich, single-page-app feel without writing a single line of JS.
+- Functional language (2011) running on the Erlang VM (1986), famous for fault-tolerant concurrency.
+- **Phoenix** + **LiveView**: write only backend code; the server keeps per-user state and pushes tiny HTML diffs over WebSockets — SPA feel with no JS framework.
 
-> To build chat apps, live collaboration tool, multi player feature, anything that requires instant concurrent data push.
+> Use for chat apps, live collaboration, multiplayer, anything with instant concurrent push. Cost: stateful connections (sticky sessions / clustering).
 
-## Corporate Giants (Java & C#)
+## Corporate giants (Java & C#)
 
-- Java: **Spring Boot** framework which powers the global finance system.
-- C#: **ASP.NET Core** is incredibly fast and modern used mostly on Microsoft Ecosystem. It powers enterprise and game development.
+- Java: **Spring Boot** powers much of global finance.
+- C#: **ASP.NET Core** is fast and modern, strongest inside the Microsoft ecosystem (enterprise, games).

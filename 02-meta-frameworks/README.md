@@ -1,37 +1,36 @@
-- sits on top of UI library making it a complete application framework
+A meta-framework sits on top of a UI library (React / Vue / Svelte) to make it a complete application framework.
 
-
-It uses UI lib and add:
-- file based routing
-- server side rendering
+It adds on top of the UI lib:
+- file-based routing
+- server-side rendering
 - static generation
-- api route
+- API routes
 - middleware
-- deployment
+- deployment adapters
 
-# how it works
+# How it works
 
-you define route (where to fetch data from) and framework decide when to fetch it : either server, client or both.
+Routing defines URLs; data-loading defines *when* data is fetched: server, client, or both.
 
-**SSR**: Produce full html on server side by fetching data and *render HTML on the fly*  
+**SSR**: server fetches data and renders full HTML on the fly per request.
 
 ![SSR](assets/ssr.png)
 
-**CSR**: SPA
+**CSR / SPA**: server sends shell + JS; client renders.
 
 ![SPA](assets/spa.png)
 
-**SSG**: Framework pre-renders all pages to static HTML at build time.
+**SSG**: framework pre-renders pages to static HTML at build time.
 
 ![SSG](assets/ssg.png)
 
-**ISR**: : Page is pre-rendered like SSG, but after a set time (e.g., 60 seconds), the next request triggers a background re-render with fresh data  
-**Hybrid / Partial Hydration**: Some part only stays on server and other part get's shipped to client where it hydrates.
+**ISR**: like SSG, but after N seconds the next request triggers a background re-render with fresh data.
+**Islands / partial hydration** (Astro) vs **Server + Client components** (Next.js): both ship less JS, but islands hydrate isolated widgets on a static page while Next.js splits one React tree into server-run and browser-run components.
 
-> here,  you write code in the same project, but some code runs on the server and some runs in the browser.
+> Here you write code in the same project, but some code runs on the server and some runs in the browser. The bridge is **hydration**: server HTML + client JS taking over interactivity.
 
 ```
-Most production apps use meta frameworks because they give you the best of all worlds. You can have:
+Most production apps use meta-frameworks because they mix modes per route:
 
     A statically generated marketing page (/about)
     A server-rendered product page (/products/123)

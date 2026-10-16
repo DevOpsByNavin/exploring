@@ -1,17 +1,17 @@
-`React` and `Vue` ship a runtime and your components as data; watches state and patch DOM at runtime (vdom + diff); Svelte shifts that work to build time: the compiler turns your component into vanilla JS that directly updates the exact DOM node. No vdom, no runtime diff library in the bundle — just tiny generated update code.
+`React` and `Vue` ship a runtime that re-renders and diffs a virtual DOM at runtime. Svelte shifts that work to build time: the compiler turns your component into vanilla JS that directly updates the exact DOM node. No VDOM, no runtime diff library in the bundle — just tiny generated update code.
 
-> The reactivity graph is constructed at compile time, not discovered at runtime. This is the deepest difference from both React (runtime diffing) and Vue (runtime proxy tracking).
+> Svelte 5 reactivity is explicit via runes (`$state`, `$derived`, `$effect`), which the compiler turns into surgical updates. This — compile-time reactivity — is the deepest difference from React (re-execute + diff) and Vue (proxy-tracked + flagged diff).
 
-- React: re-execute component → diff subtree → patch. Bundle includes react-dom.
-- Vue: ref mutates → compiler-flagged vdom patch. Bundle includes Vue runtime.
-- Svelte: let count = 0; count++ → compiler already generated button.textContent = ... update. Bundle is just your code + tiny helpers.
+- React: re-execute component → diff subtree → patch. Bundle includes `react-dom`.
+- Vue: `ref` mutates → compiler-flagged VDOM patch. Bundle includes Vue runtime.
+- Svelte 5: `let count = $state(0); count++` → compiler already generated `button.textContent = ...`. Bundle is just your code + tiny helpers.
 
-> File extension: `.svelte`
+> File extension: `.svelte`. Pair with SvelteKit for routing/SSR (the meta-framework).
 
-## .svelte (Single File Component)
+## `.svelte` (Single File Component)
 
-One file contains three different blocks:
+One file, three blocks:
 
-1. `html` -> anything outside `script and stype` tag
-2. `<script lang="ts>` -> ts
-3. `<style>` -> css
+1. Markup (HTML) — anything outside `script` / `style` tags
+2. `<script lang="ts">` — TS + runes (`$state`, `$derived`, `$effect`)
+3. `<style>` — CSS, scoped to this component by default

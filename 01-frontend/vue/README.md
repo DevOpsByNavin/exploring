@@ -1,29 +1,32 @@
-> VUE 3
+> Vue 3
 
-React diffs everything to find changes; Vue's compiler marks the changes in advance, then diffs only those spots. 
+React diffs the whole subtree to find changes; Vue's compiler marks what can change in advance, then diffs only those spots.
 
-| React (lib) | Vue (framework) |
-| - | - |
-| component + state | on top of that: folder structure, router, data fetching |
+| React (library) | Vue (framework ecosystem) |
+| --- | --- |
+| component + state (`react`, `react-dom`) | same core idea, plus official router (`vue-router`) and store (`pinia`); full app = Vue + Nuxt |
 
-## .vue (Single File Component)
+Use when: you want React-like components with more built-in conventions and less manual memoization.
 
-One file contains three different blocks:
+## `.vue` (Single File Component)
 
-1. `<template>` -> html
-2. `<script lang="ts>` -> ts
-3. `<style>` -> css
+One file, three blocks:
 
+1. `<template>` -> HTML
+2. `<script setup lang="ts">` -> TS (Composition API, the default in Vue 3)
+3. `<style scoped>` -> CSS (scoped to this component unless unscoped)
+
+`ref` vs `reactive`: `ref<number>(0)` needs `.value` in script, auto-unwraps in template. `reactive` is for objects only.
 
 ## VDOM but smarter
 
 Vue's compiler pre-analyzes the template at build time and bakes hints into the render function:
 
-  - Static hoisting — content that never changes (most of your markup) is created once and skipped during diffs entirely.
-  - Patch flags — the compiler marks exactly which parts can change: "only the text inside this button is dynamic; its attributes never change." At runtime, diffing skips everything else.
-  - Block tree — dynamic nodes are flattened into a flat list, so diffing skips the static structure.
+- Static hoisting — content that never changes is created once and skipped during diffs entirely.
+- Patch flags — the compiler marks exactly what can change: "only the text inside this button is dynamic." At runtime, diffing skips everything else.
+- Block tree — dynamic nodes are flattened into a flat list, so diffing skips the static structure.
 
->  Vue moved part of the diffing cost to build time 
+> Vue moved part of the diffing cost to build time
 
 ## How it works
 
@@ -35,5 +38,4 @@ State changes
    → patch real DOM
 ```
 
-
-Vue's compiler pre-analyzed the template and produced a `block` tree: it flattened all potentially-dynamic nodes into a short list, skipping over all the static structure entirely. So the runtime diff isn't walking the whole tree — it walks a flat array of, say, 3 dynamic nodes instead of 300 total nodes.
+Example: a 300-node template with 3 dynamic bits diffs a flat array of 3 nodes, not the whole tree.

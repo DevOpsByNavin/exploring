@@ -1,24 +1,28 @@
 ## Vercel
 
-- Team behind `Next.js`
-- Standard for hosting React, Next.js, Vue, Svelte apps
-- Free `.verce.app` domain
-- Provides edge function
+- Team behind `Next.js`. Default for React/Next.js (also serves Vue/Svelte).
+- Free `.vercel.app` domain, preview deployments per PR.
+- SSR + edge/serverless functions built in.
 
 ## Netlify
 
-> Almost same as Vercel
+- Similar to Vercel (deploys, forms, identity, functions). Historically stronger on static + Jamstack.
 
 ## Cloudflare Pages
 
+- Static hosting + Pages Functions for light server logic. Generous free bandwidth; pairs with Workers/D1/R2.
+
 ## GitHub Pages
 
+- Static-only (no SSR, no functions). Free for public repos; fine for docs/demos.
 
-> Vercel, Netlify, Cloudflare also provides serverless/edge computing.
+> Vercel / Netlify / Cloudflare Pages also offer compute — don't confuse static hosting with it.
 
-| Platform | Category | What it really allows to do |
-|---|---|---|
-| Cloudflare Pages | Static hosting + optional functions | Static assets, with lightweight server-side logic |
-| Netlify | Frontend platform + serverless | Static/frontend apps and functions |
-| Vercel | Frontend cloud platform + managed compute | Static sites, SSR, functions and full-stack framework apps |
-| Cloudflare Workers | Serverless / edge application platform | Request handlers, APIs, scheduled jobs and static assets |
+| Entry | Category | What it really is |
+| --- | --- | --- |
+| Cloudflare Pages | Static hosting + optional functions | Static assets + lightweight logic |
+| Netlify | Frontend platform + serverless | Frontend apps + functions/forms |
+| Vercel | Frontend cloud + managed compute | Static, SSR, functions, full-stack frameworks |
+| Cloudflare Workers | Compute, not a host | Request handlers, APIs, cron, static assets via bindings |
+
+Chooser: SSR + previews → Vercel; static + bandwidth → Cloudflare Pages; docs/demos → GitHub Pages. Check build minutes, bandwidth, and SSR support caps.

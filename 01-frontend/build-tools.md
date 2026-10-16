@@ -1,12 +1,14 @@
-## what it does
+## What it does
 
-- JSX/TSX -> JS/TS
-- TS -> JS
-- Bundles every single file into optimized package
+- JSX/TSX -> JS
+- TS -> JS (type-stripping / transpile)
+- Bundles files into an optimized package (code-split, minified, hashed)
 
+## Vite
 
-### Vite
+- Default for new frontend projects. Framework-agnostic (React / Vue / Svelte).
+- Dev: esbuild transform + HMR — browser updates instantly on save, preserving component state where possible. No bundle in dev.
+- Build: Rollup bundles + minifies for production.
+- Plugins add framework support (`@vitejs/plugin-react`, `@vitejs/plugin-vue`, `@sveltejs/vite-plugin-svelte`) and Tailwind.
 
-- Standard on all new frontend projects.
-- framework agnostic
-- HMR (Hot Module Replacement): update browser instantly after saving file
+Alternatives: Turbopack (Next.js), Rspack (webpack-compatible, Rust). Vite won on speed + plugin ecosystem.

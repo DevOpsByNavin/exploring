@@ -1,32 +1,31 @@
-> It uses a combo of edge function and serverless db.
+The edge pattern = edge functions (compute) + serverless DBs (storage), scaled independently.
 
-## Features:
+## Key idea
 
-- Compute and Storage are different things
-- Compute can scale down to zero if not in use
+- Compute and storage are separate. Compute scales to zero instantly when idle.
+- Gotcha: Workers cold-start in ms, but serverless Postgres (e.g. Neon) wakes in hundreds of ms. First request after idle pays the DB wake-up.
 
 ## Serverless DB
 
 1. PostgreSQL
-  - Neon
-  - Supabase (Database)
-  - CockroachDB: enterprise level
+   - Neon (scale-to-zero, HTTP driver)
+   - Supabase (database)
+   - CockroachDB (enterprise)
 
-2. Key-Value Pair
-  - Upstash: Serverless Redis
-  - DynamoDB
+2. Key-value
+   - Upstash (serverless Redis)
+   - DynamoDB
 
-3. Edge-Native DB
+3. Edge-native (distributed SQLite, replicated per region)
+   - Turso (**libSQL**): instant reads
+   - Cloudflare D1
 
-> Primarily uses distributed **SQLite** across many regions
+Rule: from edge, always use the **pooled** connection (Neon `-pooler` host / Hyperdrive). Edge runtimes can't hold direct Postgres connections.
 
-  - Turso (**libSQL**): instant data read
-  - Cloudflare D1
+## Edge functions
 
-## Edge Function
+Small handlers replicated across regions (V8 isolates, not Node: no native modules, short timeouts, no persistent connections).
 
-Simple function that are distributed across regions.
-
-- Cloudflare Worker: Integrates with **D1**, **R2**, **KV**
-- Vercel/Netlify function
+- Cloudflare Workers: integrate with **D1**, **R2**, **KV**
+- Vercel Edge / Netlify Edge functions (isolate) vs Node serverless functions (full Node APIs, slower cold start)
 - Deno Deploy

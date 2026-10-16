@@ -1,77 +1,67 @@
 ## Basics
 
-It includes:
+Covers:
 
 - Password hashing
 - Session management (cookies, JWTs, tokens)
-- Security (protecting against XSS, CSRF, timing attacks)
-- Social logins (Google, GitHub, Apple OAuth flows)
+- Security (XSS, CSRF, timing attacks, `httpOnly` / `SameSite` / `Secure` cookies)
+- Social logins (Google, GitHub, Apple OAuth + PKCE)
 - Password resets, email verification, MFA
 
 ### Passwords
 
-- Hashing: Argon2id, bcrypt
-- Salting: Add random string to password; ensure two same password have different hash
-- Peppering: A secret key outside db is also added to password.
+- Hashing: Argon2id, bcrypt (or scrypt).
+- Salting: per-password random string, so identical passwords get different hashes.
+- Peppering: app-wide secret outside the DB added to the password before hashing.
 
 ### Session management
 
-Persist identity of user across multiple request
+Persist identity across requests.
 
-#### Stateful Sessions
+#### Stateful sessions
 
-- DB/Redis + cookie
-- Instant revocation
-- Every request needs a db record to compare
+- DB/Redis + opaque cookie.
+- Instant revocation (delete the row).
+- Cost: a DB/Redis lookup per request.
 
-#### Stateless Sessions
+#### Stateless sessions (JWT)
 
-- Uses JWT (Header + Payload + Signature)
-- Header and Payload are encoded
-- The server only verify the signature based on Header + Payload, so it doesn't need to use db.
-- As a result it's hard to revoke; often paired with refresh token + short lived access token.
+- JWT = Header + Payload + Signature (header/payload are base64url-encoded, not encrypted).
+- Server verifies the signature — no DB lookup.
+- Hard to revoke; standard fix is short-lived access token + rotating refresh token stored server-side.
 
 ## Approaches
 
-It includes two main approach
+Two main approaches:
 
-1. [Auth Provider](#Auth-Provider)  
-  SasS platform that handle entire auth flow through their SDK
+1. **Auth provider** — SaaS handling the whole flow via SDK.
+2. **Self-hosted libraries** — tools for sessions/OAuth/adapters; you own storage and security.
 
-2. [Open source Libraries](#)  
-  Gives you tools to build auth, but you handle the implementation, database storage, and security yourself.
-
-### Auth Provider
+### Auth providers
 
 #### Clerk
 
-- Ready to use, customizable UI component
-- Generous free tier (50K MRU)
-- But vendor lock-in
+- Ready-made customizable UI components.
+- Generous free tier (~50k MAU).
+- Con: vendor lock-in.
 
-#### Autho0
+#### Auth0 (Okta)
 
-- Battle tested, the OG
-- Enterprise standard, so complex and pricier
+- Battle-tested OG, enterprise standard (organizations, RBAC, logs).
+- Con: complex, pricier at scale.
 
 #### Supabase Auth
 
-- Integrated with their overall BaaS suite
+- Built into the Supabase BaaS (Postgres + RLS + storage). Cheapest path if already on Supabase.
 
-OpenSource DIY
+### DIY / self-hosted
 
+#### Auth.js (NextAuth.js v5)
 
-### DIY
+- OAuth providers, email/password, session management, DB adapters.
+- Most Next.js examples target it; still Next-centric. More work than a provider.
 
-#### Auth.js (NextAuth.js)
+#### Better Auth (current pick for framework-agnostic)
 
-- Framework agnostic and full control
-- Comes with OAuth provider, session management, email/pass auth, db adapter, etc
-- More work
-
-#### Lucia
-
-- Newer, Minimalist, lightweight, unopinionated, flexible
-- provides basic to build yourself
-- doesn't give oauth provider by itself
-- session management, user validation, db adapter
+- TypeScript-first, adapters for Prisma/Drizzle, social + email/password + MFA, works on Node and edge.
+- Replaces Lucia (deprecated/archived by its author in 2025).

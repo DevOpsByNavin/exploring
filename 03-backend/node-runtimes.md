@@ -1,35 +1,37 @@
 ## Node.js
 
-Runtime env that execute js/ts on the server side instead of client side.
+Runtime that executes JS/TS on the server instead of the browser.
 
 ### Frameworks
 
 1. Express.js
 
-- Most popular, oldest, flexible and minimalist
-- Unopinionated (gives bare minimum to work with and doesn't force to org file in certain order)
-- Pros: Massive ecosystem
-- Cons: if not structured can turn onto "spaghetti code"
-- Best for: Simple API, Prototyping
+- Most popular, oldest, flexible, minimalist.
+- Unopinionated (bare minimum, no enforced folder structure).
+- Pros: massive ecosystem / middleware.
+- Cons: unstructured projects become "spaghetti code".
+- Best for: simple APIs, prototyping.
 
 2. NestJS
 
-- Enterprise grade, opinionated, highly strucutred framework
-- Pros: Scalable cause it forces you to write clean, organized code
-- Cons: Tons of boilerplate and overkill for a simple project
-- Best for: complex microservices
+- Enterprise-grade, opinionated (Angular-style DI, decorators, modules).
+- Pros: scales across teams by forcing clean structure.
+- Cons: boilerplate, overkill for simple projects.
+- Best for: complex microservices / teams.
 
-> It uses **Expres.js** under the hood by default but can also use **Fastify** for better performance
+> Uses **Express.js** under the hood by default, or **Fastify** for better throughput.
 
 3. Fastify
 
-- low overhead framework optimized to maximize rps
-- Pros: Fast (using schema-based validation i.e, validate incoming API payload within fraction)
-- Cons: Growing ecosystem, Node.js centric
+- Low-overhead, schema-based validation (JSON Schema → very fast payload checks) optimized for max RPS.
+- Pros: fast, mature since 2016.
+- Cons: smaller middleware ecosystem than Express.
 
 4. Hono
 
-- Ultra-modern, lightweight, fast, minimalist.
-- Pros: runs everywhere (Node.js, Cloudflare Worker, Vercel function, Bun, Deno) and blazingly fast.
-- Cons: Growing ecosystem
-- Best for: Serverless/Edge computing
+- Ultra-light, runs everywhere (Node.js, Cloudflare Workers, Vercel functions, Bun, Deno) because it avoids Node-only APIs.
+- Pros: tiny + fast on edge.
+- Cons: younger ecosystem.
+- Best for: serverless / edge.
+
+Chooser: Express = prototype, Fastify = raw RPS on Node, Nest = team microservices, Hono = edge/serverless.
